@@ -1,0 +1,59 @@
+{
+  "name": "gl-vignette-background",
+  "version": "1.0.0",
+  "description": "a pretty looking vignette background for GL",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Matt DesLauriers <dave.des@gmail.com>",
+  "dependencies": {
+    "gl-quad": "^1.0.0",
+    "glsl-random": "0.0.4",
+    "glslify": "^1.6.0"
+  },
+  "devDependencies": {
+    "canvas-testbed": "^0.4.0",
+    "color-string": "^0.2.1",
+    "tape": "~2.13.2"
+  },
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "testling": {
+    "files": "test.js",
+    "browsers": [
+      "ie/6..latest",
+      "chrome/22..latest",
+      "firefox/16..latest",
+      "safari/latest",
+      "opera/11.0..latest",
+      "iphone/6",
+      "ipad/6",
+      "android-browser/latest"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mattdesl/gl-vignette-background.git"
+  },
+  "homepage": "https://github.com/mattdesl/gl-vignette-background",
+  "bugs": {
+    "url": "https://github.com/mattdesl/gl-vignette-background/issues"
+  },
+  "keywords": [
+    "glsl",
+    "gl",
+    "webgl",
+    "gl-modules",
+    "stackgl",
+    "texture",
+    "image",
+    "background",
+    "vignette",
+    "gradient"
+  ],
+  "browserify": {
+    "transform": [
+      "glslify"
+    ]
+  }
+}
