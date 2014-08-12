@@ -6,8 +6,6 @@ Creates a soft gradient background with noise, suitable for your sweet WebGL dem
 
 ![demo](http://i.imgur.com/IMRLl9D.png)
 
-See [demo/index.js](demo/index.js) for an example.
-
 ```js
 var createBackground = require('gl-vignette-background')
 
@@ -47,11 +45,13 @@ require('domready')(function() {
 })
 ```
 
-Inherits functions and members from [gl-quad](https://www.npmjs.org/package/gl-quad).
+See [demo/index.js](demo/index.js) for a full-screen example.
 
 ## Usage
 
 [![NPM](https://nodei.co/npm/gl-vignette-background.png)](https://nodei.co/npm/gl-vignette-background/)
+
+Inherits functions and members from [gl-quad](https://www.npmjs.org/package/gl-quad).
 
 ## functions
 
