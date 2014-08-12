@@ -14,7 +14,6 @@ function Vignette(gl, options) {
     this.gl = gl
 
     this.shader = defaultShader(gl)
-    this.shader.bind()
 
     //some defaults
     this.style({
@@ -50,7 +49,6 @@ Vignette.prototype.style = function(options) {
 }
 
 Vignette.prototype.draw = function() {
-    this.shader.bind()
     Quad.prototype.draw.call(this, this.shader)
 }
 
