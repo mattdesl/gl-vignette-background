@@ -1,6 +1,6 @@
 {
   "name": "gl-vignette-background",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a soft gradient background in WebGL",
   "main": "index.js",
   "license": "MIT",
