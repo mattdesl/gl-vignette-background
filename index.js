@@ -1,6 +1,10 @@
 var glslify = require('glslify')
 var Quad = require('gl-quad')
 
+var mat4 = require('gl-mat4/create')
+var toIdentity = require('gl-mat4/identity')
+var toOrtho = require('gl-mat4/ortho')
+
 var defaultShader = glslify({
     vertex: './vert.glsl',
     fragment: './frag.glsl'
@@ -15,6 +19,10 @@ function Vignette(gl, options) {
 
     this.shader = defaultShader(gl)
 
+    var identity = toIdentity( mat4() )
+    var ortho = mat4()
+    toOrtho(ortho, -1, 1, 1, -1, 1, -1)
+
     //some defaults
     this.style({
         aspect: gl.canvas.width / gl.canvas.height,
@@ -24,7 +32,10 @@ function Vignette(gl, options) {
         offset: [0, 0],
         color1: [1, 1, 1],
         color2: [0, 0, 0],
-        scale: [1.0, 1.0]
+        scale: [1.0, 1.0],
+        projection: ortho,
+        model: identity,
+        view: identity
     })
 
     //mix in user options
