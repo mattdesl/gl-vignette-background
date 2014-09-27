@@ -1,20 +1,30 @@
 var glslify = require('glslify')
 var Quad = require('gl-quad')
+var inherits = require('inherits')
 
-var defaultShader = glslify({
+var defaultShader = require('./create-shader')(glslify({
     vertex: './vert.glsl',
-    fragment: './frag.glsl'
-})
+    fragment: './frag.glsl',
+    sourceOnly: true
+}))
+
+var toIdentity = require('gl-mat4/identity') 
+var mat4 = require('gl-mat4/create')
 
 function Vignette(gl, options) {
     if (!(this instanceof Vignette))
         return new Vignette(gl, options)
     Quad.call(this, gl)
-
     this.gl = gl
+        
+    var shader = options.shader
+    
+    if (!shader) 
+        this.defaultShader = defaultShader(gl)
+    this.shader = shader || this.defaultShader
 
-    this.shader = defaultShader(gl)
-
+    var identity = toIdentity( mat4() )
+    
     //some defaults
     this.style({
         aspect: gl.canvas.width / gl.canvas.height,
@@ -24,7 +34,10 @@ function Vignette(gl, options) {
         offset: [0, 0],
         color1: [1, 1, 1],
         color2: [0, 0, 0],
-        scale: [1.0, 1.0]
+        scale: [1.0, 1.0],
+        projection: identity,
+        view: identity,
+        model: identity
     })
 
     //mix in user options
@@ -32,7 +45,7 @@ function Vignette(gl, options) {
         this.style(options)
 }
 
-Vignette.prototype = Object.create(Quad.prototype)
+inherits(Vignette, Quad)
 
 Vignette.prototype.style = function(options) {
     if (!options) 
@@ -53,9 +66,9 @@ Vignette.prototype.draw = function() {
 }
 
 Vignette.prototype.dispose = function() {
-    if (this.shader) {
-        this.shader.dispose()
-        this.shader = null
+    if (this.defaultShader) {
+        this.defaultShader.dispose()
+        this.defaultShader = undefined
     }
     Quad.prototype.dispose.call(this)
 }

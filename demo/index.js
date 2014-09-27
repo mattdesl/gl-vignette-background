@@ -1,10 +1,13 @@
+var shader2
+
 var createBackground = require('../')
 var colorString = require('color-string')
 
 var background
 
 require('canvas-testbed')(render, start, {
-    context: 'webgl'
+    context: 'webgl',
+    once: true
 })
 
 function rgb(str) {
@@ -15,7 +18,6 @@ function rgb(str) {
 
 function render(gl, width, height) {
     gl.clear(gl.COLOR_BUFFER_BIT)
-    gl.viewport(0, 0, width, height)
 
     var radius = Math.max(width, height) * 1.05
     background.style({ 
