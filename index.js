@@ -15,6 +15,7 @@ function Vignette(gl, options) {
     if (!(this instanceof Vignette))
         return new Vignette(gl, options)
     Quad.call(this, gl)
+    options = options||{}
     this.gl = gl
         
     var shader = options.shader
