@@ -56,7 +56,9 @@ Vignette.prototype.style = function(options) {
     var uniforms = this.shader.uniforms
     for (var k in options) {
         if (options.hasOwnProperty(k) 
-                && (options[k] || typeof options[k] === 'number')) {
+                && (options[k] 
+                    || typeof options[k] === 'number')
+                    || typeof options[k] === 'boolean') {
             uniforms[k] = options[k]
         }
     }
