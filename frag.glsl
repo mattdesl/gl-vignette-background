@@ -4,7 +4,8 @@ precision mediump float;
 
 varying vec2 vUv;
 
-#pragma glslify: random = require(glsl-random)
+#pragma glslify: random = require('glsl-random')
+#pragma glslify: blend = require('glsl-blend-overlay')
 
 uniform float aspect;
 uniform vec2 scale; 
@@ -16,16 +17,6 @@ uniform float noiseAlpha;
 
 uniform vec3 color1;
 uniform vec3 color2;
-
-vec3 BlendOverlay(vec3 base, vec3 blend) {
-	return vec3(
-		base.r < 0.5 ? (2.0 * base.r * blend.r) : (1.0 - 2.0 * (1.0 - base.r) * (1.0 - blend.r)),
-		base.g < 0.5 ? (2.0 * base.g * blend.g) : (1.0 - 2.0 * (1.0 - base.g) * (1.0 - blend.g)),
-		base.b < 0.5 ? (2.0 * base.b * blend.b) : (1.0 - 2.0 * (1.0 - base.b) * (1.0 - blend.b))
-	);
-}
-
-//TODO: textures, alpha ? 
 
 void main() {	
 	vec2 pos = vUv;
@@ -43,7 +34,7 @@ void main() {
 
 	if (noiseAlpha > 0.0) {
 		vec3 noise = coloredNoise ? vec3(random(vUv * 1.5), random(vUv * 2.5), random(vUv)) : vec3(random(vUv));
-		color.rgb = mix(color.rgb, BlendOverlay(color.rgb, noise), noiseAlpha);
+		color.rgb = mix(color.rgb, blend(color.rgb, noise), noiseAlpha);
 	}
 	gl_FragColor = color;
 }

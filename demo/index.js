@@ -28,13 +28,12 @@ function render () {
   var height = app.shape[1]
   var radius = Math.max(width, height) * 1.05
   background.style({
-    scale: [ 1 / width * radius, 1 / height * radius],
+    scale: [ 1 / width * radius, 1 / height * radius ],
     aspect: 1,
     color1: rgb('#ffffff'),
     color2: rgb('#283844'),
     smoothing: [ -0.5, 1.0 ],
     noiseAlpha: 0.35,
-    noiseScale: app.scale * 1.75,
     coloredNoise: true,
     offset: [ -0.05, -0.15 ]
   })

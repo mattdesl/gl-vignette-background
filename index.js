@@ -1,5 +1,4 @@
 var glslify = require('glslify')
-var inherits = require('inherits')
 
 var createQuad = require('gl-quad')
 var createShader = require('gl-shader')
@@ -34,21 +33,22 @@ function createBackground (gl) {
     color1: [1, 1, 1],
     color2: [0, 0, 0],
     scale: [1.0, 1.0],
-    noiseScale: 1,
     projection: matrix,
     view: matrix,
     model: matrix
   })
 
   function style (opt) {
-    if (!opt)
+    if (!opt) {
       return
+    }
 
     shader.bind()
     var uniforms = shader.uniforms
     for (var k in opt) {
-      if (exists(opt, k))
+      if (exists(opt, k)) {
         uniforms[k] = opt[k]
+      }
     }
   }
 
@@ -70,8 +70,8 @@ function createBackground (gl) {
 }
 
 function exists (opt, k) {
-  return opt.hasOwnProperty(k)
-    && (opt[k]
-    || typeof opt[k] === 'number'
-    || typeof opt[k] === 'boolean')
+  return opt.hasOwnProperty(k) &&
+    (opt[k] ||
+    typeof opt[k] === 'number' ||
+    typeof opt[k] === 'boolean')
 }

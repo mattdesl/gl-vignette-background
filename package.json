@@ -10,41 +10,22 @@
     "gl-mat4": "^1.0.0",
     "gl-quad": "^1.0.0",
     "gl-shader": "^4.0.1",
-    "gl-shader-core": "^2.2.0",
     "glsl-blend-overlay": "^1.0.5",
-    "glsl-film-grain": "^1.0.2",
     "glsl-random": "0.0.4",
-    "glslify": "^2.1.2",
-    "inherits": "^2.0.1"
+    "glslify": "^5.0.0"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
     "budo": "^7.0.3",
     "canvas-testbed": "^1.0.0",
-    "color-string": "^0.2.1",
-    "tape": "~2.13.2",
     "uglify-js": "^2.6.1",
     "canvas-loop": "^1.0.4",
     "hex-rgb": "^1.0.0",
     "webgl-context": "^2.1.2"
   },
   "scripts": {
-    "test": "tape test.js",
     "start": "budo demo/index.js:bundle.js --live",
     "build": "browserify demo/index.js | uglifyjs -cm > bundle.js"
-  },
-  "testling": {
-    "files": "test.js",
-    "browsers": [
-      "ie/6..latest",
-      "chrome/22..latest",
-      "firefox/16..latest",
-      "safari/latest",
-      "opera/11.0..latest",
-      "iphone/6",
-      "ipad/6",
-      "android-browser/latest"
-    ]
   },
   "repository": {
     "type": "git",
