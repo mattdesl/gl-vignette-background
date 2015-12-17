@@ -15,12 +15,17 @@
     "inherits": "^2.0.1"
   },
   "devDependencies": {
+    "browserify": "^12.0.1",
+    "budo": "^7.0.3",
     "canvas-testbed": "^1.0.0",
     "color-string": "^0.2.1",
-    "tape": "~2.13.2"
+    "tape": "~2.13.2",
+    "uglify-js": "^2.6.1"
   },
   "scripts": {
-    "test": "tape test.js"
+    "test": "tape test.js",
+    "start": "budo demo/index.js:bundle.js --live",
+    "build": "browserify demo/index.js | uglifyjs -cm > bundle.js"
   },
   "testling": {
     "files": "test.js",
