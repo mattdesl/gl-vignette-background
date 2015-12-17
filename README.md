@@ -6,43 +6,58 @@ Creates a soft gradient background with noise, suitable for your sweet WebGL dem
 
 ![demo](http://i.imgur.com/IMRLl9D.png)
 
+Also see [three-vignette-background](https://github.com/mattdesl/three-vignette-background) for a ThreeJS version of this module, with a slightly different API and noise algorithm.
+
+## Install
+
+```sh
+npm install gl-vignette-background --save
+```
+
+## Example
+
 ```js
 var createBackground = require('gl-vignette-background')
 
-var width = 490,
-	height = 400
+// get a WebGL canvas
+var gl = require('webgl-context')()
 
-var gl = require('webgl-context')({
-    width: width
-    height: height
-})
+// create your background
+var background = createBackground(gl)
 
-require('domready')(function() {
-	gl.clear(gl.COLOR_BUFFER_BIT)
-    gl.viewport(0, 0, width, height)
+function render () {
+  var width = gl.drawingBufferWidth
+  var height = gl.drawingBufferHeight
 
-    //create our quad
-	var bg = createBackground(gl)
+  gl.viewport(0, 0, width, height)
+  gl.clearColor(0, 0, 0, 1)
+  
+  // set some flags before drawing
+  gl.clear(gl.COLOR_BUFFER_BIT)
+  gl.disable(gl.DEPTH_TEST)
+  gl.disable(gl.CULL_FACE)
 
-	var radius = width * 1.05
-
-	//optional styling 
-	bg.style({
-        scale: [ 1/width * radius, 1/height * radius],
-        aspect: 1,
-        color1: [1, 1, 1],
-        color2: [40/255, 56/255, 68/255], //rgb expressed in 0.0 - 1.0
-        smoothing: [ -0.5, 1.0 ],
-        noiseAlpha: 0.07,
-        offset: [ -0.05, -0.15 ]
-	})
-
-	//draw the full-screen quad
-	bg.draw()
-
-    //place canvas on DOM
-    document.body.appendChild(gl.canvas)
-})
+  // setup some fancy style (optional)
+  var radius = Math.max(width, height) * 1.05
+  background.style({
+    // xy scale
+    scale: [ 1 / width * radius, 1 / height * radius ],
+    // aspect ratio for vignette
+    aspect: 1,
+    // radial gradient colors A->B
+    color1: [ 1, 1, 1 ],
+    color2: [ 0.5, 0.5, 0.5 ],
+    // smoothstep low/high input
+    smoothing: [ -0.5, 1.0 ],
+    // % opacity of noise grain (0 -> disabled)
+    noiseAlpha: 0.35,
+    // whether or not the noise is monochromatic
+    coloredNoise: true,
+    // offset the vignette
+    offset: [ -0.05, -0.15 ]
+  })
+  background.draw()
+}
 ```
 
 See [demo/index.js](demo/index.js) for a full-screen example.
@@ -50,10 +65,6 @@ See [demo/index.js](demo/index.js) for a full-screen example.
 ## Usage
 
 [![NPM](https://nodei.co/npm/gl-vignette-background.png)](https://nodei.co/npm/gl-vignette-background/)
-
-Inherits functions and members from [gl-quad](https://www.npmjs.org/package/gl-quad).
-
-## functions
 
 ### ```var bg = createBackground(gl [, style])```
 
@@ -97,9 +108,7 @@ The following options are stylable:
 
 ## running the demo
 
-Install [beefy](https://www.npmjs.org/package/beefy) and run:
-
-```beefy demo/index.js --open```
+Git clone this repo, run `npm install`, then `npm start` and open `localhost:9966`.
 
 ## License
 

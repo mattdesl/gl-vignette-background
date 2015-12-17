@@ -15,17 +15,16 @@
     "glslify": "^5.0.0"
   },
   "devDependencies": {
-    "browserify": "^12.0.1",
     "budo": "^7.0.3",
-    "canvas-testbed": "^1.0.0",
-    "uglify-js": "^2.6.1",
     "canvas-loop": "^1.0.4",
+    "canvas-testbed": "^1.0.0",
     "hex-rgb": "^1.0.0",
+    "standard": "^5.4.1",
     "webgl-context": "^2.1.2"
   },
   "scripts": {
     "start": "budo demo/index.js:bundle.js --live",
-    "build": "browserify demo/index.js | uglifyjs -cm > bundle.js"
+    "test": "standard"
   },
   "repository": {
     "type": "git",
