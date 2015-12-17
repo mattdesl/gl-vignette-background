@@ -1,79 +1,77 @@
 var glslify = require('glslify')
-var Quad = require('gl-quad')
 var inherits = require('inherits')
 
-var defaultShader = require('./create-shader')(glslify({
-    vertex: './vert.glsl',
-    fragment: './frag.glsl',
-    sourceOnly: true
-}))
+var createQuad = require('gl-quad')
+var createShader = require('gl-shader')
 
-var toIdentity = require('gl-mat4/identity') 
-var mat4 = require('gl-mat4/create')
+var identity4x4 = require('gl-mat4/identity')
 
-function Vignette(gl, options) {
-    if (!(this instanceof Vignette))
-        return new Vignette(gl, options)
-    Quad.call(this, gl)
-    options = options||{}
-    this.gl = gl
-        
-    var shader = options.shader
-    
-    if (!shader) 
-        this.defaultShader = defaultShader(gl)
-    this.shader = shader || this.defaultShader
+var vert = glslify('./vert.glsl')
+var frag = glslify('./frag.glsl')
 
-    var identity = toIdentity( mat4() )
-    
-    //some defaults
-    this.style({
-        aspect: gl.canvas.width / gl.canvas.height,
-        smoothing: [-0.4, 0.8],
-        noiseAlpha: 0.04,
-        coloredNoise: true,
-        offset: [0, 0],
-        color1: [1, 1, 1],
-        color2: [0, 0, 0],
-        scale: [1.0, 1.0],
-        projection: identity,
-        view: identity,
-        model: identity
-    })
+module.exports = createBackground
+function createBackground (gl) {
+  var attribs = [
+    { name: 'position', location: 0, type: 'vec4' },
+    { name: 'uv', location: 1, type: 'vec2' }
+  ]
 
-    //mix in user options
-    if (options)
-        this.style(options)
-}
+  var shader = createShader(gl, vert, frag, null, attribs)
+  var quad = createQuad(gl)
+  var matrix = identity4x4([])
 
-inherits(Vignette, Quad)
+  var width = gl.drawingBufferWidth
+  var height = gl.drawingBufferHeight
 
-Vignette.prototype.style = function(options) {
-    if (!options) 
-        return
+  // some defaults
+  style({
+    aspect: width / height,
+    smoothing: [-0.4, 0.8],
+    noiseAlpha: 0.04,
+    coloredNoise: true,
+    offset: [0, 0],
+    resolution: [ width, height ],
+    color1: [1, 1, 1],
+    color2: [0, 0, 0],
+    scale: [1.0, 1.0],
+    noiseScale: 1,
+    projection: matrix,
+    view: matrix,
+    model: matrix
+  })
 
-    this.shader.bind()
-    var uniforms = this.shader.uniforms
-    for (var k in options) {
-        if (options.hasOwnProperty(k) 
-                && (options[k] 
-                    || typeof options[k] === 'number')
-                    || typeof options[k] === 'boolean') {
-            uniforms[k] = options[k]
-        }
+  function style (opt) {
+    if (!opt)
+      return
+
+    shader.bind()
+    var uniforms = shader.uniforms
+    for (var k in opt) {
+      if (exists(opt, k))
+        uniforms[k] = opt[k]
     }
+  }
+
+  function draw () {
+    shader.bind()
+    quad.draw()
+  }
+
+  function dispose () {
+    shader.dispose()
+    quad.dispose()
+  }
+
+  return {
+    draw: draw,
+    dispose: dispose,
+    style: style
+  }
 }
 
-Vignette.prototype.draw = function() {
-    Quad.prototype.draw.call(this, this.shader)
+function exists (opt, k) {
+  return opt.hasOwnProperty(k)
+    && (opt[k]
+    || typeof opt[k] === 'number'
+    || typeof opt[k] === 'boolean')
 }
-
-Vignette.prototype.dispose = function() {
-    if (this.defaultShader) {
-        this.defaultShader.dispose()
-        this.defaultShader = undefined
-    }
-    Quad.prototype.dispose.call(this)
-}
-
-module.exports = Vignette
